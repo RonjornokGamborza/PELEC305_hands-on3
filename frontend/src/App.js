@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -6,15 +6,15 @@ function App() {
 
   const API_URL = process.env.REACT_APP_API_URL;
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     const response = await fetch(`${API_URL}/api/tasks/`);
     const data = await response.json();
     setTasks(data);
-  };
+  }, [API_URL]);
+
+  useEffect(() => {
+    fetchTasks();
+  }, [fetchTasks]);
 
   const addTask = async () => {
     await fetch(`${API_URL}/api/tasks/`, {
