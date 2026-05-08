@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 
 function App() {
-
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
 
   const API_URL = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const fetchTasks = async () => {
     const response = await fetch(`${API_URL}/api/tasks/`);
@@ -13,12 +16,7 @@ function App() {
     setTasks(data);
   };
 
-  useEffect(() => {
-    fetchTasks();
-  }, []);
-
   const addTask = async () => {
-
     await fetch(`${API_URL}/api/tasks/`, {
       method: "POST",
       headers: {
@@ -49,9 +47,7 @@ function App() {
 
       <ul>
         {tasks.map((task) => (
-          <li key={task.id}>
-            {task.title}
-          </li>
+          <li key={task.id}>{task.title}</li>
         ))}
       </ul>
     </div>
